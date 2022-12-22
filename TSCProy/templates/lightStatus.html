@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block content %}
+{% include 'components/lastRecord.html' %}
+{% include 'components/tableLastRecords.html' %}
+{% endblock content %}
+
+
+
+{% block scripts %}
+<script>
+    var lastStatus = "{{ lastRecord.status }}";
+    var isSending = false;
+
+    function lightOnOff() {
+        if(!isSending) {
+            isSending = true;
+      const formData = new FormData();
+
+      formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+      formData.append("setBy", "{{user.id}}");
+      console.log("{{user.id}}");
+      formData.append("aux", "on");
+      console.log(formData)
+      
+      if(!lastStatus || lastStatus == "False"){
+        formData.append("status", "on");
+      }
+
+      const request = new XMLHttpRequest();
+      request.open("POST", "http://localhost:8000/admin/API/record/add/");
+      request.send(formData);
+
+      request.addEventListener('load', (event) => {
+        isSending = false;
+        
+      });
+    
+      // Define what happens in case of an error
+      request.addEventListener('error', (event) => {
+        isSending = false;
+        alert('Oops! Something went wrong.');
+      });
+      window.location.reload();
+    }
+  }
+</script>
+{% endblock scripts %}
+

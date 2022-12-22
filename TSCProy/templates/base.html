@@ -1,0 +1,35 @@
+<!-- templates/_base.html -->
+
+{% load compress %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django + Tailwind CSS + Flowbite</title>
+
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}">
+    {% endcompress %}
+
+</head>
+
+<body class="bg-gray-300 ">
+
+    {% block navbar %}{% endblock navbar %}
+    <!-- End of new HTML -->
+
+    <div class="container mx-auto my-4">
+        {% block content %}{% endblock content %}
+        
+    </div>
+    {% block scripts %}{% endblock scripts %}
+
+    <script src="https://unpkg.com/flowbite@1.5.5/dist/flowbite.js"></script>
+</body>
+
+</html>
