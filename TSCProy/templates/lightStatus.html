@@ -22,17 +22,18 @@
       const formData = new FormData();
 
       formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
-      formData.append("setBy", "{{user.id}}");
+      formData.append("setBy", "http://localhost:8000/API/users/{{user.id}}/");
       console.log("{{user.id}}");
-      formData.append("aux", "on");
+      formData.append("aux", "true");
+      formData.append("descrip", "Configurado manualmente");
       console.log(formData)
       
       if(!lastStatus || lastStatus == "False"){
-        formData.append("status", "on");
+        formData.append("status", "true");
       }
 
       const request = new XMLHttpRequest();
-      request.open("POST", "http://localhost:8000/admin/API/record/add/");
+      request.open("POST", "http://localhost:8000/API/records/");
       request.send(formData);
 
       request.addEventListener('load', (event) => {

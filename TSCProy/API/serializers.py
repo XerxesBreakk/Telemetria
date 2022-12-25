@@ -17,4 +17,4 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class RecordSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = record
-        fields=['id','status','recordTime','setBy','aux']
+        fields=['id','status','recordTime','setBy','aux','descrip']
