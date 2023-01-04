@@ -4,7 +4,7 @@
 {% endblock navbar %}
 
 {% block content %}
-
+{% comment %} 
 <ol class="relative border-1 border-gray-200 dark:border-gray-700">                  
     {% for record in records %}
     <li class="mb-10 ml-6">            
@@ -31,59 +31,45 @@
         <a href="#" class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-200 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700"><svg class="mr-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd"></path></svg> Download ZIP</a>
     </li>
     {% endfor %}
-</ol>
+</ol> {% endcomment %}
 
 <div>
     <div class="container bg-gray-200 mx-auto w-full h-full">
         <div class="relative wrap overflow-hidden p-10 h-full">
           <div class="border-2-2 absolute border-opacity-20 border-gray-700 h-full border" style="left: 50%"></div>
+          {% for record in records %}
+          {% if record.status %}
           <!-- right timeline -->
           <div class="mb-8 flex justify-between items-center w-full right-timeline">
             <div class="order-1 w-5/12"></div>
             <div class="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-8 h-8 rounded-full">
-              <h1 class="mx-auto font-semibold text-lg text-white">1</h1>
+              <h1 class="mx-auto font-semibold text-lg text-white">{{ forloop.counter }} </h1>
             </div>
-            <div class="order-1 bg-gray-400 rounded-lg shadow-xl w-5/12 px-6 py-4">
-              <h3 class="mb-3 font-bold text-gray-800 text-xl">Lorem Ipsum</h3>
-              <p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+            <div class="order-1 bg-green-400 rounded-lg shadow-xl w-5/12 px-6 py-4">
+              <h3 class="mb-3 font-bold text-gray-800 text-xl">Encendido</h3>
+              <p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">Configurado el {{ record.recordTime }}</p>
+              <p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">Configurado por {{ record.setBy }}</p>
+              <p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">Comentarios: {{ record.descrip }}</p>
+              <p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">Activo por: {{ record.usedFor }}</p>
             </div>
           </div>
-      
+          {% else %}
           <!-- left timeline -->
           <div class="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
             <div class="order-1 w-5/12"></div>
             <div class="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-8 h-8 rounded-full">
-              <h1 class="mx-auto text-white font-semibold text-lg">2</h1>
+              <h1 class="mx-auto text-white font-semibold text-lg">{{ forloop.counter }}</h1>
             </div>
             <div class="order-1 bg-red-400 rounded-lg shadow-xl w-5/12 px-6 py-4">
-              <h3 class="mb-3 font-bold text-white text-xl">Lorem Ipsum</h3>
-              <p class="text-sm font-medium leading-snug tracking-wide text-white text-opacity-100">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+              <h3 class="mb-3 font-bold text-white text-xl">Apagado</h3>
+              <p class="text-sm font-medium leading-snug tracking-wide text-white text-opacity-100">Configurado el {{ record.recordTime }}</p>
+              <p class="text-sm font-medium leading-snug tracking-wide text-white text-opacity-100">Configurado por {{ record.setBy }}</p>
+              <p class="text-sm font-medium leading-snug tracking-wide text-white text-opacity-100">Comentarios: {{ record.descrip }}</p>
+              <p class="text-sm font-medium leading-snug tracking-wide text-white text-opacity-100">Activo por: {{ record.usedFor }}</p>
             </div>
           </div>
-          
-          <!-- right timeline -->
-          <div class="mb-8 flex justify-between items-center w-full right-timeline">
-            <div class="order-1 w-5/12"></div>
-            <div class="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-8 h-8 rounded-full">
-              <h1 class="mx-auto font-semibold text-lg text-white">3</h1>
-            </div>
-            <div class="order-1 bg-gray-400 rounded-lg shadow-xl w-5/12 px-6 py-4">
-              <h3 class="mb-3 font-bold text-gray-800 text-xl">Lorem Ipsum</h3>
-              <p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-            </div>
-          </div>
-      
-          <!-- left timeline -->
-          <div class="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
-            <div class="order-1 w-5/12"></div>
-            <div class="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-8 h-8 rounded-full">
-              <h1 class="mx-auto text-white font-semibold text-lg">4</h1>
-            </div>
-            <div class="order-1 bg-red-400 rounded-lg shadow-xl w-5/12 px-6 py-4">
-              <h3 class="mb-3 font-bold text-white text-xl">Lorem Ipsum</h3>
-              <p class="text-sm font-medium leading-snug tracking-wide text-white text-opacity-100">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-            </div>
-          </div>
+          {% endif %}
+          {% endfor %}
         </div>
       </div>
 </div>
