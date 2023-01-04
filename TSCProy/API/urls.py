@@ -11,4 +11,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('lightStatus/',views.lightStatus,name="lightStatus"),
     path('history/',views.lightHistory,name='lightHistory'),
+    path('login/',views.LoginView.as_view(),name='login'),
+    path('logout/',views.LogoutView.as_view(),name='logout'),
 ]

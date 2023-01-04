@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+
+{% block content %}
+<form class="login100-form validate-form" action="" method="POST">
+    {% csrf_token %}
+
+    {% if alert_message %}
+    <div class="alert alert-danger">                            
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ alert_message.mod }} {{ alert_message.message }}
+    </div>
+    {% endif %}
+
+    
+    <span class="login100-form-title p-b-34 p-t-27">
+        {{ tittle|capfirst }}
+    </span>
+    <div class="wrap-input100 validate-input" data-validate = "Ingrese Correo Electrónico">
+        <input type="text" name="username" required="" class="input100" id="id_username" placeholder="Correo Electrónico">
+        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+    </div>
+    <div class="wrap-input100 validate-input" data-validate="Ingrese Contraseña">
+        <input type="password" name="password" required="" class="input100" id="id_password" placeholder="Contraseña">
+        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+    </div>
+    <div class="container-login100-form-btn">
+        <input id="id_Iniciar sesión" class="login100-form-btn" type="submit" value="Iniciar sesión">
+    </div>
+</form>
+{% endblock content %}

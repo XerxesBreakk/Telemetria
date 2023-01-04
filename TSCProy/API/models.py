@@ -1,9 +1,7 @@
-from datetime import timedelta
+from datetime import timedelta,datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-
-import requests
 
 # Create your models here.
 class record(models.Model):
@@ -21,26 +19,40 @@ class record(models.Model):
     #     return actStatus + " "+ str(self.recordTime)
     
     def lastRecords(n):
-        data=record.objects.all().order_by('-id')[:n]
+        data=record.objects.filter(aux=1).order_by('-id')[:n]
         return data
        
     def refreshDelta():
-        records=record.objects.all()
+        records=record.objects.filter(aux=1)
         for rec in records:
             nextID=rec.pk +1
             nextRecord=record.objects.get(pk=nextID)
-            delta= nextRecord.recordTime.timestamp() - rec.recordTime.timestamp()
-            rec.usedFor=timedelta(seconds=delta)
-            print(str(nextRecord.recordTime))
-            print(str(rec.recordTime))
-            print(rec.usedFor)
-            print(delta)
-            rec.save()
-            try:
-                lastRecord=get_object_or_404(records,pk= nextID+1)
-            except:
-                break
-        
+            print(nextRecord.id,' ',nextRecord.aux)
+            
+            
+            if not nextRecord.aux:
+                print('Ingreso en if aux')
+                nextID=nextID+1
+                nextRecord=record.objects.get(pk=nextID)
+                
+            if rec.status==nextRecord.status:
+                nextRecord.aux=0
+                nextRecord.descrip='Deshabilitado por repeticion'
+                nextRecord.save()
+            elif nextRecord.recordTime < rec.recordTime:
+                nextRecord.aux=0
+                nextRecord.descrip='Deshabilitado por error en recordTime'
+                nextRecord.save()
+            else:
+                delta= nextRecord.recordTime.timestamp() - rec.recordTime.timestamp()
+                rec.usedFor=timedelta(seconds=delta)
+                # print(str(nextRecord.recordTime))
+                # print(str(rec.recordTime))
+                # print(rec.usedFor)
+                # print(delta)
+                rec.save()
+                if nextRecord.id==record.objects.latest('id').id:
+                    break
     
     # def sincro():
     #     r=requests.get('http://192.168.10.16/status/')
