@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Usuarios</h1>
+<ul>
+{% for user in object_list %}
+    <li>{{ user.date_joined|date }} - {{ user.username }}</li>
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+</ul>
+{% endblock content %}

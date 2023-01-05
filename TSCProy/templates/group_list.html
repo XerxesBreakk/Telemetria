@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Grupos</h1>
+<ul>
+{% for group in object_list %}
+    <li>{{ group.id }} - {{ group.name }}</li>
+{% empty %}
+    <li>No Groups yet.</li>
+{% endfor %}
+</ul>
+{% endblock content %}

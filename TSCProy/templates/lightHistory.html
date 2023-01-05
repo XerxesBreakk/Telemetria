@@ -46,7 +46,11 @@
               <h1 class="mx-auto font-semibold text-lg text-white">{{ forloop.counter }} </h1>
             </div>
             <div class="order-1 bg-green-400 rounded-lg shadow-xl w-5/12 px-6 py-4">
-              <h3 class="mb-3 font-bold text-gray-800 text-xl">Encendido</h3>
+              <h3 class="mb-3 font-bold text-gray-800 text-xl">Encendido
+                {% if record.usedFor == NULL %}
+                <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">Actual</span>
+                {% endif %}
+              </h3>
               <p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">Configurado el {{ record.recordTime }}</p>
               <p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">Configurado por {{ record.setBy }}</p>
               <p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">Comentarios: {{ record.descrip }}</p>
@@ -61,7 +65,11 @@
               <h1 class="mx-auto text-white font-semibold text-lg">{{ forloop.counter }}</h1>
             </div>
             <div class="order-1 bg-red-400 rounded-lg shadow-xl w-5/12 px-6 py-4">
-              <h3 class="mb-3 font-bold text-white text-xl">Apagado</h3>
+              <h3 class="mb-3 font-bold text-white text-xl">Apagado
+                {% if record.usedFor == NULL %}
+                <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">Actual</span>
+                {% endif %}
+              </h3>
               <p class="text-sm font-medium leading-snug tracking-wide text-white text-opacity-100">Configurado el {{ record.recordTime }}</p>
               <p class="text-sm font-medium leading-snug tracking-wide text-white text-opacity-100">Configurado por {{ record.setBy }}</p>
               <p class="text-sm font-medium leading-snug tracking-wide text-white text-opacity-100">Comentarios: {{ record.descrip }}</p>

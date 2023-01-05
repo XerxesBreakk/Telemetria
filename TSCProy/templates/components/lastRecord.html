@@ -1,13 +1,16 @@
 <div class="flex-col px-3 py-2 bg-gray-200">
     {% if lastRecord.status %}
-    <div class="bg-green-400"> Estado: {{ lastRecord.status }}</div>
+    <div class="bg-green-400 max-w-md"> Estado: {{ lastRecord.status }}</div>
     {% else %}
-    <div class="bg-red-400"> Estado: {{ lastRecord.status }}</div>
+    <div class="bg-red-400 max-w-md"> Estado: {{ lastRecord.status }}</div>
     {% endif %}
     <div> Realizado: {{ lastRecord.recordTime }}</div>
     <div> Configurado por: {{ lastRecord.setBy }}</div>
-    <div class="max-w-xs">
-        <button class="bg-blue-600 rounded-lg p-2" onclick="lightOnOff()">
-        onclick </button>
+    <div class="max-w-xs uppercase">
+        {% if lastRecord.status %}
+        <button class="bg-red-500 rounded-lg p-2" onclick="lightOnOff()"> Apagar </button>
+        {% else %}
+        <button class="bg-blue-500 rounded-lg p-2" onclick="lightOnOff()"> Encender </button>
+        {% endif %}
     </div>
 </div>
