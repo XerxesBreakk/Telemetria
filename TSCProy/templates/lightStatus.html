@@ -33,7 +33,7 @@
       }
 
       const request = new XMLHttpRequest();
-      request.open("POST", "http://localhost:8000/API/records/");
+      request.open("POST", "http://localhost:8000/admin/API/record/add/");
       request.send(formData);
 
       request.addEventListener('load', (event) => {

@@ -4,6 +4,7 @@
 <h1>Grupos</h1>
 <ul>
 {% for group in object_list %}
+    <li> {{ group.permissions }} </li>
     <li>{{ group.id }} - {{ group.name }}</li>
 {% empty %}
     <li>No Groups yet.</li>
