@@ -6,27 +6,12 @@
 
 {% block content %}
 
-
+<h1 class=" text-blue-600">Edicion de usuario {{ usuario }}</h1>
 
 <form method="post">{% csrf_token %}
     <div class="mb-6">
         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo electrónico</label>
         {{ form.email }}
-    </div>
-    <div class="mb-6">
-        <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Usuario</label>
-        {{ form.username }}
-        <p class="text-red-600">{{ form.username.errors }}</p>
-    </div>
-    <div class="mb-6">
-        <label for="password1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña</label>
-        <input type="password" name="password1" autocomplete="new-password" id="id_password1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-    </div>
-    <div class="mb-6">
-        <label for="password2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirmar contraseña</label>
-        <input type="password" name="password2" autocomplete="new-password" id="id_password2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-        <p class="text-red-600">
-        {{ form.password2.errors }}</p>
     </div>
     <div class="grid md:grid-cols-2 md:gap-6">
         <div class="relative z-0 w-full mb-6 group">

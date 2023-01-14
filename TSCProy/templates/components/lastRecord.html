@@ -1,16 +1,32 @@
+{% if last %}
 <div class="flex-col px-3 py-2 bg-gray-200">
-    {% if lastRecord.status %}
-    <div class="bg-green-400 max-w-md"> Estado: {{ lastRecord.status }}</div>
+    {% if last.status %}
+    <div class="bg-green-400 max-w-md"> Estado: {{ last.status }}</div>
     {% else %}
-    <div class="bg-red-400 max-w-md"> Estado: {{ lastRecord.status }}</div>
+    <div class="bg-red-400 max-w-md"> Estado: {{ last.status }}</div>
     {% endif %}
-    <div> Realizado: {{ lastRecord.recordTime }}</div>
-    <div> Configurado por: {{ lastRecord.setBy }}</div>
+    <div> Realizado: {{ last.recordTime }}</div>
+    <div> Configurado por: {{ last.setBy }}</div>
     <div class="max-w-xs uppercase">
-        {% if lastRecord.status %}
-        <button class="bg-red-500 rounded-lg p-2" onclick="lightOnOff()"> Apagar </button>
+        {% if last.status %}
+        <form method="post">{% csrf_token %}
+            <input type="hidden" name="status" id="id_status" value=False>
+            <input type="hidden" name="setBy" id="id_setBy" value={{ request.user.id }}>
+            <input type="hidden" name="descrip" id="id_descrip" value="Configurado manualmente">
+            <button type="submit" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Apagar</button>
+        </form>
+        {% comment %} <button class="bg-red-500 rounded-lg p-2" onclick="lightOnOff()"> Apagar </button> {% endcomment %}
         {% else %}
-        <button class="bg-blue-500 rounded-lg p-2" onclick="lightOnOff()"> Encender </button>
+        <form method="post">{% csrf_token %}
+            <input type="hidden" name="status" id="id_status" value=True>
+            <input type="hidden" name="setBy" id="id_setBy" value={{ request.user.id }}>
+            <input type="hidden" name="descrip" id="id_descrip" value="Configurado manualmente">
+            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Encender</button>
+        </form>
         {% endif %}
     </div>
+    
 </div>
+{% else %}
+<div class="bg-gray-600">No records yet </div>
+{% endif %}

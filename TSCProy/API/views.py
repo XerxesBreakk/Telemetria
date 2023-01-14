@@ -5,19 +5,57 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import Group, Permission
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView,UpdateView,DeletionMixin
+from django.views.generic.edit import CreateView,UpdateView
 from django.urls import reverse_lazy
 from .models import record
 from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets,permissions
-from .serializers import UserSerializer, GroupSerializer, RecordSerializer
-from .forms import LoginForm
+from .serializers import RecordSerializer
+from .forms import LoginForm,UserCreateForm
 
 from django.contrib.auth.models import User,Group
 from .forms import LoginForm,UserCreationForm,UserChangeForm
-from django.contrib.auth.views import update_session_auth_hash
 
-# Create your views here.
+
+class RecordStatusView(UserPassesTestMixin,CreateView):
+    model=record
+    fields=[
+        'status',
+        'setBy',
+        'descrip',
+    ]
+    template_name='record/create_record.html'
+    success_url=reverse_lazy('lightHistory')
+    
+    def test_func(self):
+        print("test func")
+        return self.request.user.is_staff
+    
+    # def form_valid(self, form):
+    #     try:
+    #         context = self.get_context_data()
+    #         userprofile = context['userprofile']
+
+    #         if not User.objects.filter(username=form.instance.username).exists() and userprofile.is_valid():
+    #             self.object = form.save()
+    #             for group_ in form.cleaned_data['groups']:
+    #                 self.object.groups.add(group_)
+    #             response = super(UserCreate, self).form_valid(form)
+    #         else:
+    #             response = super(UserCreate, self).form_invalid(form)
+    #     except Exception as e:
+    #         response = super(UserCreate, self).form_invalid(form)
+    #     return response
+    
+    def get_context_data(self, **kwargs):
+        print("get context")
+        context=super(RecordStatusView,self).get_context_data(**kwargs)
+        context['title']="Status Luces"
+        context['last_records']=record.lastRecords(10)
+        context['last']=record.objects.last()
+        return context
+
+
 @login_required(login_url='/API/login/')
 def lightStatus(request):
     lastRecord=record.objects.last()
@@ -28,10 +66,13 @@ def lightStatus(request):
     
 
 def lightHistory(request):
-    #record.refreshDelta()
+    record.refreshDelta()
     return render(request,'lightHistory.html',{
         'records': record.objects.filter(aux=1).order_by('-id')
     })
+    
+
+    
     
     
 class LoginView(FormView):
@@ -61,7 +102,6 @@ class LoginView(FormView):
             'message': u'Usuario o contraseña incorrecta.'}
             print(self.alert_message['message'])
             return self.get(request)
-        return render(request, "/")
     
     def get_context_data(self, **kwargs):
         context=super(LoginView,self).get_context_data( **kwargs)
@@ -122,10 +162,10 @@ class UserListView(UserPassesTestMixin, ListView):
 
     
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.is_staff
     
 class UserCreate(UserPassesTestMixin, CreateView):
-    form_class=UserCreationForm
+    form_class=UserCreateForm
     template_name = 'user_create.html'
     success_url = '/API/user/'
 
@@ -134,6 +174,7 @@ class UserCreate(UserPassesTestMixin, CreateView):
         return self.request.user.is_superuser
     
     def form_valid(self, form):
+        print("form valid")
         try:
             context = self.get_context_data()
             userprofile = context['userprofile']
@@ -151,19 +192,22 @@ class UserCreate(UserPassesTestMixin, CreateView):
 
     
     def form_invalid(self, form):
+        print("form invalid")
+        for field in form:
+            print(field)
+            print(field.errors)
+        
         return super(UserCreate, self).form_invalid(form)
     
     def get_context_data(self, **kwargs):
+        print("Get context")
         context = super(UserCreate, self).get_context_data(**kwargs)
-        if self.request.POST:
-            context['userprofile'] = UserCreationForm(self.request.POST)
-        else:
-            context['userprofile'] = UserCreationForm()
+        context['userprofile'] = UserCreateForm()
         return context
     
 class UserUpdate(UserPassesTestMixin, UpdateView):
     form_class=UserChangeForm
-    template_name = 'user_create.html'
+    template_name = 'user_update.html'
     success_url = '/API/user/'
 
     
@@ -179,9 +223,7 @@ class UserUpdate(UserPassesTestMixin, UpdateView):
     
     def form_valid(self, form):
         try:
-            print("Form valid")
             if form.is_valid():
-                print("Es valido")
                 self.object = form.save()
                 for group_ in form.cleaned_data['groups']:
                     self.object.groups.add(group_)
@@ -194,16 +236,13 @@ class UserUpdate(UserPassesTestMixin, UpdateView):
 
     
     def form_invalid(self, form):
-        print("Form Invalid")
         return super(UserUpdate, self).form_invalid(form)
     
     
     def get_context_data(self, **kwargs):
+        print(self.form_valid)
         context = super(UserUpdate, self).get_context_data(**kwargs)
-        if self.request.POST:
-            context['userprofile'] = UserChangeForm(self.request.POST)
-        else:
-            context['userprofile'] = UserChangeForm()
+        context['usuario']=User.objects.get(pk=self.kwargs['id']).username
         return context
     
 class UserDeleteView(UserPassesTestMixin,UpdateView):
@@ -223,9 +262,6 @@ class UserDeleteView(UserPassesTestMixin,UpdateView):
     
     def form_valid(self, form):
         try:
-            print(form.instance.id)
-            print(form.cleaned_data['id'])
-            print(form.cleaned_data['username'])
             user = User.objects.get(pk=form.instance.id)
             user.is_active = False
             user.save()

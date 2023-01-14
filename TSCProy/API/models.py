@@ -11,11 +11,11 @@ class record(models.Model):
     descrip=models.CharField(max_length=100,default="No description")
     usedFor=models.DurationField(null=True,blank=True,editable=True)
     
-    # def __str__(self):
-    #     actStatus="Apagado"
-    #     if self.status:
-    #         actStatus="Encendido"
-    #     return actStatus + " "+ str(self.recordTime)
+    def __str__(self):
+        actStatus="Apagado"
+        if self.status:
+            actStatus="Encendido"
+        return actStatus + " "+ str(self.recordTime)
     
     def lastRecords(n):
         data=record.objects.filter(aux=1).order_by('-id')[:n]
@@ -26,31 +26,29 @@ class record(models.Model):
         for rec in records:
             nextID=rec.pk +1
             nextRecord=record.objects.get(pk=nextID)
-            print(rec.id,' ',rec.status,' ',nextRecord.id,' ',nextRecord.status)
-            
-            
-            if not nextRecord.aux:
-                print('Ingreso en if aux')
-                nextID=nextID+1
-                nextRecord=record.objects.get(pk=nextID)
+            # print(rec.id,' ',rec.status,' ',nextRecord.id,' ',nextRecord.status)
+            activo=1
+            while activo:
+                if not nextRecord.aux:
+                    # print('Ingreso en if aux')
+                    nextID=nextID+1
+                    nextRecord=record.objects.get(pk=nextID)
+                else:
+                    activo=0
                 
             if rec.status == nextRecord.status:
-                nextRecord.aux=0
+                nextRecord.aux=False
                 nextRecord.descrip='Deshabilitado por repeticion'
                 nextRecord.save()
-                print('if repeticion de status')
+                # print('if repeticion de status')
             elif nextRecord.recordTime < rec.recordTime:
-                nextRecord.aux=0
+                nextRecord.aux=False
                 nextRecord.descrip='Deshabilitado por error en recordTime'
                 nextRecord.save()
-                print('Error en recordTime')
+                # print('Error en recordTime')
             else:
                 delta= nextRecord.recordTime.timestamp() - rec.recordTime.timestamp()
                 rec.usedFor=timedelta(seconds=delta)
-                # print(str(nextRecord.recordTime))
-                # print(str(rec.recordTime))
-                # print(rec.usedFor)
-                # print(delta)
                 rec.save()
                 if nextRecord.id==record.objects.latest('id').id:
                     break

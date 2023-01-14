@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} {% endblock title %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block content %}
+{% include 'components/lastRecord.html' %}
+{% include 'components/tableLastRecords.html' %}
+{% endblock content %}
