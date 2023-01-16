@@ -18,16 +18,17 @@
     
     <span class="login100-form-title p-b-34 p-t-27">
     </span>
-    <div class="wrap-input100 validate-input" data-validate = "Ingrese Correo Electrónico">
-        <input type="text" name="username" required="" class="input100" id="id_username" placeholder="Correo Electrónico">
+    <div class="wrap-input100 validate-input mb-4" data-validate = "Ingrese Correo Electrónico">
+        <input type="text" name="username" required="" class="input100" id="id_username" placeholder="Usuario">
         <span class="focus-input100" data-placeholder="&#xf207;"></span>
     </div>
-    <div class="wrap-input100 validate-input" data-validate="Ingrese Contraseña">
+    <div class="wrap-input100 validate-input mb-4" data-validate="Ingrese Contraseña">
         <input type="password" name="password" required="" class="input100" id="id_password" placeholder="Contraseña">
         <span class="focus-input100" data-placeholder="&#xf191;"></span>
     </div>
     <div class="container-login100-form-btn">
-        <input id="id_Iniciar sesión" class="login100-form-btn" type="submit" value="Iniciar sesión">
+        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Iniciar sesión</button>
+        
     </div>
 </form>
 {% endblock content %}

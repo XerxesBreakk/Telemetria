@@ -26,7 +26,7 @@ SECRET_KEY = '6dk=tzhu*%2-4dl#e)&%gq@_)yg*54r8)5!zu=@rb6wv7s2bv3'
 DEBUG = True
 isLocal= True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'API',
     'rest_framework',
     'compressor',
+    'celery',
+    'django_celery_beat'
 ]
 
 REST_FRAMEWORK = {
@@ -156,3 +158,10 @@ STATIC_ROOT = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Celery Configuration Options
+CELERY_TIMEZONE = "America/Guayaquil"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_BROKER_REDIS_URL="amqp://localhost:5672"
+CELERY_BROKER_URL="amqp://localhost:5672"

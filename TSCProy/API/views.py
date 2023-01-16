@@ -175,19 +175,23 @@ class UserCreate(UserPassesTestMixin, CreateView):
     
     def form_valid(self, form):
         print("form valid")
+        
         try:
             context = self.get_context_data()
-            userprofile = context['userprofile']
-
-            if not User.objects.filter(username=form.instance.username).exists() and userprofile.is_valid():
+            print("ingreso al try")
+            if not User.objects.filter(username=form.cleaned_data['username']).exists() and form.is_valid():
+                form.cleaned_data['is_active']=1
                 self.object = form.save()
+                print("Graba al usuario")
                 for group_ in form.cleaned_data['groups']:
                     self.object.groups.add(group_)
                 response = super(UserCreate, self).form_valid(form)
             else:
                 response = super(UserCreate, self).form_invalid(form)
+                print("algo fallo")
         except Exception as e:
             response = super(UserCreate, self).form_invalid(form)
+            print("entro al except")
         return response
 
     

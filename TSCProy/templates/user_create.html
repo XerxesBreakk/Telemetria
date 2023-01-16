@@ -12,6 +12,7 @@
     <div class="mb-6">
         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo electrónico</label>
         {{ form.email }}
+        <p class="text-red-600">{{ form.username.errors }}</p>
     </div>
     <div class="mb-6">
         <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Usuario</label>
@@ -44,6 +45,7 @@
         <div class="relative z-0 w-full mb-6 group">
             {{ form.is_staff }}
             <label for="is_staff" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">¿Es profesor?</label>
+            <input type="hidden" name="is_active" id="id_is_active" value=True>
         </div>
     </div>
     
